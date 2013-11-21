@@ -1,0 +1,39 @@
+!!!
+%html
+	%head
+	%body
+		%H1
+			Welcome to Idea Cloud 
+		%h2
+			(next time with pizza!)
+			
+		- if @user
+			Welcome
+			= @user
+			If this is not you please
+			%form#logout(action="/logout" method="POST")
+				%input(type="submit" value="Sign Out")
+		- else
+			%form#login(action="/login" method="POST")
+				%input(name="name")
+				%input(type="submit" value="Sign In")
+		%form#vote(action="/vote" method="POST")
+			%ul
+				- @votes.each do |idea, voters|
+					%li
+						- if @user
+							%button(name="idea" value=idea)
+								+/-
+								= voters.count
+								- if voters.include? @user
+									*
+						- else
+							[
+							= voters.count
+							]
+						= idea
+		- if @user
+			%form#add_idea(action="/add_idea" method="POST")
+				%input(name="idea" autofocus)
+				%input(type="submit")
+		
